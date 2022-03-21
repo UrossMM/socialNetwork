@@ -59,3 +59,8 @@ C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Humanizer.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll

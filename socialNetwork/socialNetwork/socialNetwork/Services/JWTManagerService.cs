@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Repository
 {
-    public class JWTManagerRepository : IJWTManagerRepository
+    public class JWTManagerService : IJWTManagerService
     {
         private readonly IConfiguration configuration;
 
@@ -20,14 +20,14 @@ namespace socialNetwork.Repository
 
 
         //ovaj dictionary ce biti obrisan i koristice se podaci iz baze (preko context)
-        Dictionary<string, string> UserRecords = new Dictionary<string, string>
+        /*Dictionary<string, string> UserRecords = new Dictionary<string, string>
         {
             {"user1", "password1" },
             {"user2", "password2" },
             {"user3", "password3" },
-        };
+        };*/
 
-        public JWTManagerRepository(IConfiguration configuration, AppDbContext context)
+        public JWTManagerService(IConfiguration configuration, AppDbContext context)
         {
             this.configuration = configuration;
             _context = context;
@@ -38,14 +38,16 @@ namespace socialNetwork.Repository
             _context = context;
         }*/
 
-        public Tokens Authenticate(Users user)
+        public Tokens Authenticate(UserVM user)
         {
 
             //umesto ovog uslova treba da ide provera iz baze(da li je takav korisnik registrovan)
-            if(!UserRecords.Any(x => x.Key==user.Name && x.Value==user.Password))
+            /*if(!UserRecords.Any(x => x.Key==user.Name && x.Value==user.Password))
             {
                 return null;
-            }
+            }*/
+
+
 
             var tokenhandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
@@ -65,17 +67,5 @@ namespace socialNetwork.Repository
             return new Tokens { Token = tokenhandler.WriteToken(token) };
         }
 
-        public void AddNewUser(UsersVM user)
-        {
-            var _user = new Users()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                Password = user.Password
-            };
-
-            _context.AllUsers.Add(_user);
-            _context.SaveChanges();
-        }
     }
 }

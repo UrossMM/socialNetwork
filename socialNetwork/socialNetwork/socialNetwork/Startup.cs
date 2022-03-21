@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +62,11 @@ namespace socialNetwork
 
 
             //configure dbcontext with sql
-            /*var context =*/ services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+            /*var context =*/
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -71,7 +76,7 @@ namespace socialNetwork
 
 
 
-            services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddTransient<IJWTManagerService, JWTManagerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

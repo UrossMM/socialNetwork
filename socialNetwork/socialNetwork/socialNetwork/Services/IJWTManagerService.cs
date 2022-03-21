@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Repository
 {
-    public interface IJWTManagerRepository
+    public interface IJWTManagerService
     {
-        Tokens Authenticate(Users user);
-        void AddNewUser(UsersVM user);
+        Tokens Authenticate(UserVM user);
     }
 }

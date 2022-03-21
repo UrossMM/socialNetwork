@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Models.ViewModels
 {
-    public class UsersVM
+    public class UserVM
     {
-        public string Name { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
+        public bool RememberMe { get; set; }
+        //public string ConfirmPassword { get; set; }
+
     }
 }
