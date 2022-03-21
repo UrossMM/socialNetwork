@@ -16,8 +16,6 @@ namespace socialNetwork.Repository
     {
         private readonly IConfiguration configuration;
 
-        private AppDbContext _context;
-
 
         //ovaj dictionary ce biti obrisan i koristice se podaci iz baze (preko context)
         /*Dictionary<string, string> UserRecords = new Dictionary<string, string>
@@ -30,13 +28,7 @@ namespace socialNetwork.Repository
         public JWTManagerService(IConfiguration configuration, AppDbContext context)
         {
             this.configuration = configuration;
-            _context = context;
         }
-
-        /*public JWTManagerRepository(AppDbContext context)
-        {
-            _context = context;
-        }*/
 
         public Tokens Authenticate(UserVM user)
         {

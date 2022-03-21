@@ -44,25 +44,19 @@ namespace socialNetwork.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("authenticate")]
-        public async Task<IActionResult> LogIn(UserVM userdata)
+        public async Task<IActionResult> LogIn([FromBody]UserVM userdata)
         {
-            var result = await signInManager.PasswordSignInAsync(userdata.Email, userdata.Password, userdata.RememberMe, lockoutOnFailure: true);
-            Console.WriteLine(result);
-            if (result.Succeeded)
+            var user = new User { UserName = userdata.Email, Email = userdata.Email };
+            await signInManager.SignInAsync(user, isPersistent: false);
+            var token = tokenService.Authenticate(userdata);
+
+            if (token == null)
             {
-                //_logger.LogInformation("User logged in.");
-                var token = tokenService.Authenticate(userdata);
-
-                if (token == null)
-                {
-                    return Unauthorized();
-                }
-
-                return Ok(token);
+               return Unauthorized();
             }
 
-            return NotFound();
-           
+               return Ok(token);
+                       
         }
 
         [AllowAnonymous]
@@ -70,8 +64,8 @@ namespace socialNetwork.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]UserVM model)
         {
-            var user = new User { UserName = model.Email, Email = model.Email, Password = model.Password, RememberMe = model.RememberMe, Name = model.Name };
-            var result = await userManager.CreateAsync(user);
+            var user = new User { UserName = model.Email, Email = model.Email, RememberMe = model.RememberMe, Name = model.Name };
+            var result = await userManager.CreateAsync(user, model.Password);
 
             //await signInManager.SignInAsync(user, isPersistent: false);
             return Ok();
