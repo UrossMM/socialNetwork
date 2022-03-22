@@ -14,6 +14,14 @@ namespace socialNetwork.Models
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
-        //public List<Grupa> Grupe { get; set; }
+        
+        //referenca na grupe u kojima je admin
+        public List<Group> Grupe { get; set; }
+        public List<GroupUser> GroupUsers { get; set; }
+        //referenca na groupusers?? ili referenca na objave koje je pisao??
+
+        //referenca na followed i follower
+        public List<User> Followed { get; set; }
+        public List<User> Following { get; set; }
     }
 }

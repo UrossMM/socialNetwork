@@ -12,5 +12,7 @@ namespace socialNetwork.Models
         public string Type { get; set; } // javna ili privatna
         //referenca na Group kojoj pripada Post
         //referenca na User koji je napisao Post
+        //referenca na komentare
+        
     }
 }

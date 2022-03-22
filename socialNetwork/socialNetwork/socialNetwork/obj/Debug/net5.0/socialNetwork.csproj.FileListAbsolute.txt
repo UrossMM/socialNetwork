@@ -64,3 +64,10 @@ C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\AutoMapper.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll

@@ -10,5 +10,6 @@ namespace socialNetwork.Models
         public int Id { get; set; }
         public string Text { get; set; }
         //referenca na objavu kojoj pripada Comment
+        // da li treba pamtiti root komentar?
     }
 }

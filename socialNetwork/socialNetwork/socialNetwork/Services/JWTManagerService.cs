@@ -30,7 +30,7 @@ namespace socialNetwork.Repository
             this.configuration = configuration;
         }
 
-        public Tokens Authenticate(UserVM user)
+        public Tokens Authenticate(UserDTO user)
         {
 
             //umesto ovog uslova treba da ide provera iz baze(da li je takav korisnik registrovan)

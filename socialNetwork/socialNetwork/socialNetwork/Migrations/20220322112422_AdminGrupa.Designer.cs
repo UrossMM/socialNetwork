@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using socialNetwork.Models;
 
 namespace socialNetwork.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220322112422_AdminGrupa")]
+    partial class AdminGrupa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,28 +172,6 @@ namespace socialNetwork.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("socialNetwork.Models.GroupUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GroupUsers");
-                });
-
             modelBuilder.Entity("socialNetwork.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -326,32 +306,8 @@ namespace socialNetwork.Migrations
                     b.Navigation("Admin");
                 });
 
-            modelBuilder.Entity("socialNetwork.Models.GroupUser", b =>
-                {
-                    b.HasOne("socialNetwork.Models.Group", "Group")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("socialNetwork.Models.User", "User")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("socialNetwork.Models.Group", b =>
-                {
-                    b.Navigation("GroupUsers");
-                });
-
             modelBuilder.Entity("socialNetwork.Models.User", b =>
                 {
-                    b.Navigation("GroupUsers");
-
                     b.Navigation("Grupe");
                 });
 #pragma warning restore 612, 618

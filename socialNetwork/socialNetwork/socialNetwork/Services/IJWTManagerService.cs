@@ -9,6 +9,6 @@ namespace socialNetwork.Repository
 {
     public interface IJWTManagerService
     {
-        Tokens Authenticate(UserVM user);
+        Tokens Authenticate(UserDTO user);
     }
 }

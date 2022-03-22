@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using socialNetwork.Models;
+using socialNetwork.Repositories;
 using socialNetwork.Repository;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace socialNetwork
                     };
                 });
 
-
+           
             //configure dbcontext with sql
             /*var context =*/
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
@@ -68,15 +69,19 @@ namespace socialNetwork
             services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddControllers();
+            services.AddControllers(); /*.AddNewtonsoftJson(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );*/
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "socialNetwork", Version = "v1" });
             });
 
 
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient<IJWTManagerService, JWTManagerService>();
+            services.AddTransient<IRepo, Repo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
