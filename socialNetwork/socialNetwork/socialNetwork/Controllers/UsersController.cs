@@ -81,8 +81,8 @@ namespace socialNetwork.Controllers
         [Route("createGroup")]
         public async Task<IActionResult> CreateGroup(Group group, string user)
         {
-            repository.CreateGroup(group, user);
-            return Ok();
+            var result = repository.CreateGroup(group, user);
+            return Ok(result);
         }
 
         [HttpGet]

@@ -34,7 +34,7 @@ namespace socialNetwork.Repositories
             throw new NotImplementedException();
         }
 
-        public void CreateGroup(Group group, string user)
+        public Group CreateGroup(Group group, string user)
         {
             //samo jedna grupa sa jednim imenom
             var existingName = _context.Groups.FirstOrDefault(g => g.Name == group.Name);
@@ -59,9 +59,11 @@ namespace socialNetwork.Repositories
 
                 _context.GroupUsers.Add(groupUser);
                 _context.SaveChanges();
+
+                return newGroup;
             }
 
-            
+            return null;
 
         }
 
@@ -89,11 +91,11 @@ namespace socialNetwork.Repositories
 
         public void Follow(UserDTO user1, UserDTO user2)
         {
-            var newFollowing = new Following
+            /*var newFollowing = new Following
             {
                 FollowedId = user1.Id,
                 FollowerId = user2.Id
-            };
+            };*/
         }
 
         public void GetAllPosts(Group group)

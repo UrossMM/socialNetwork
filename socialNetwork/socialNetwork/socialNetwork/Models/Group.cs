@@ -18,6 +18,7 @@ namespace socialNetwork.Models
 
         //referenca na tabelu GroupUser??? -za sad da
         public List<GroupUser> GroupUsers { get; set; }
+        public List<Post> Posts { get; set; }
 
         /*referenca na tabelu Post
         public List<Post> Posts { get; set; }*/

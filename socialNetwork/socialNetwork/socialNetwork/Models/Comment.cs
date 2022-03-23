@@ -10,6 +10,10 @@ namespace socialNetwork.Models
         public int Id { get; set; }
         public string Text { get; set; }
         //referenca na objavu kojoj pripada Comment
+        public int PostId {get;set;}
+        public Post Post { get; set; }
         // da li treba pamtiti root komentar?
+        public int? ParentId { get; set; } //id na roditeljski komentar
+        public Comment? Parent { get; set; }
     }
 }

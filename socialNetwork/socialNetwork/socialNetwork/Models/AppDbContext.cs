@@ -35,5 +35,7 @@ namespace socialNetwork.Models
         //public DbSet<Users> AllUsers { get; set; } ovo ne treba jer koristimo aspnetusers
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupUser> GroupUsers { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
