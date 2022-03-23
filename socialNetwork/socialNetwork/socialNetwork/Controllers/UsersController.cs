@@ -116,11 +116,49 @@ namespace socialNetwork.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("addUserToGroup/{id}")]
-        public IActionResult AddUserToGroup(string id, Group group)
+        [Route("addUserToGroup/{id}/{groupId}")]
+        public IActionResult AddUserToGroup(string id, int groupId)
         {
-            repository.AddUserToGroup(id, group);
+            repository.AddUserToGroup(id, groupId);
             return Ok();
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("createPost/{groupId}/{userId}")]
+        public IActionResult CreatePost(Post post, int groupId, string userId)
+        {
+            var result = repository.CreatePost(post, groupId, userId);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("follow/{followed}/{follower}")]
+        public IActionResult Follow(string followed, string follower)
+        {
+            repository.Follow(followed, follower);
+            return Ok();
+        }
+
+
+        //radi iz postmana kada se pozove bez parentComm, a iz swaggera ne
+        /*[HttpPost]
+        [AllowAnonymous]
+        [Route("addComment/{postId}/{parentComm?}")]
+        public IActionResult AddComment(Comment newComm, int postId, int? parentComm = null)
+        {
+            repository.AddComment(newComm, postId, parentComm);
+            return Ok();
+        }*/
+
+       [HttpPost]
+       [AllowAnonymous]
+       [Route("addComment/{postId}")]
+       public IActionResult AddComment(Comment newComm, int postId, [FromQuery]int? parentComm)
+       {
+           repository.AddComment(newComm, postId, parentComm);
+           return Ok();
+       }
     }
 }

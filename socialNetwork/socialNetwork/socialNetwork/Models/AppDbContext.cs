@@ -29,7 +29,15 @@ namespace socialNetwork.Models
                 .WithMany(ua => ua.GroupUsers)
                 .HasForeignKey(ui => ui.UserId);
 
-           
+            builder.Entity<Following>()
+                 .HasOne(u => u.Followed)
+                 .WithMany(ua => ua.Followed)
+                 .HasForeignKey(ui => ui.FollowedId);
+
+            builder.Entity<Following>()
+                .HasOne(u => u.Follower)
+                .WithMany(ua => ua.Following)
+                .HasForeignKey(ui => ui.FollowerId);
         }
 
         //public DbSet<Users> AllUsers { get; set; } ovo ne treba jer koristimo aspnetusers
@@ -37,5 +45,6 @@ namespace socialNetwork.Models
         public DbSet<GroupUser> GroupUsers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Following> Followings { get; set; }
     }
 }

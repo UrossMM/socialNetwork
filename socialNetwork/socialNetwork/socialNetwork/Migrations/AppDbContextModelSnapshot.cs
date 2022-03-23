@@ -175,6 +175,28 @@ namespace socialNetwork.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("socialNetwork.Models.Following", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FollowedId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FollowerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowedId");
+
+                    b.HasIndex("FollowerId");
+
+                    b.ToTable("Followings");
+                });
+
             modelBuilder.Entity("socialNetwork.Models.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -387,6 +409,21 @@ namespace socialNetwork.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("socialNetwork.Models.Following", b =>
+                {
+                    b.HasOne("socialNetwork.Models.User", "Followed")
+                        .WithMany("Followed")
+                        .HasForeignKey("FollowedId");
+
+                    b.HasOne("socialNetwork.Models.User", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerId");
+
+                    b.Navigation("Followed");
+
+                    b.Navigation("Follower");
+                });
+
             modelBuilder.Entity("socialNetwork.Models.Group", b =>
                 {
                     b.HasOne("socialNetwork.Models.User", "Admin")
@@ -444,6 +481,10 @@ namespace socialNetwork.Migrations
 
             modelBuilder.Entity("socialNetwork.Models.User", b =>
                 {
+                    b.Navigation("Followed");
+
+                    b.Navigation("Following");
+
                     b.Navigation("GroupUsers");
 
                     b.Navigation("Grupe");

@@ -17,21 +17,38 @@ namespace socialNetwork.Repositories
             _context = context;
         }
 
-        public void AddUserToGroup(string id, Group group)
+        public void AddUserToGroup(string id, int groupId)
         {
-            var groupUser = new GroupUser()
-            {
-                UserId = id,
-                GroupId = group.Id
-            };
+            //provera da li taj user vec nije u toj grupi
+            var checkMembership = _context.GroupUsers.Where(f => f.UserId == id && f.GroupId == groupId).FirstOrDefault();
 
-            _context.GroupUsers.Add(groupUser);
-            _context.SaveChanges();
+            if(checkMembership == null)
+            {
+                var groupUser = new GroupUser()
+                {
+                    UserId = id,
+                    GroupId = groupId
+                };
+
+                _context.GroupUsers.Add(groupUser);
+                _context.SaveChanges();
+            }
+            
         }
 
-        public void CommentPost(Comment comm, Post post)
+        public Comment AddComment(Comment newComm, int postId, int? parentComm = null)
         {
-            throw new NotImplementedException();
+            var newComment = new Comment
+            {
+                Text = newComm.Text,
+                PostId = postId,
+                ParentId= parentComm
+            };
+
+            _context.Comments.Add(newComment);
+            _context.SaveChanges();
+
+            return newComment;
         }
 
         public Group CreateGroup(Group group, string user)
@@ -84,21 +101,51 @@ namespace socialNetwork.Repositories
             return result;
         }
 
-        public void CreatePost(Post post, Group group, UserDTO user)
+        public Post CreatePost(Post post, int groupId, string userId)
         {
-            throw new NotImplementedException();
-        }
 
-        public void Follow(UserDTO user1, UserDTO user2)
-        {
-            /*var newFollowing = new Following
+            //da li je osoba koja hoce da doda post u grupi clan te grupe
+            var member = _context.GroupUsers.Where(c => c.UserId == userId && c.GroupId==groupId).FirstOrDefault();
+
+            if(member!=null)
             {
-                FollowedId = user1.Id,
-                FollowerId = user2.Id
-            };*/
+                var newPost = new Post
+                {
+                    Content = post.Content,
+                    Type = post.Type,
+                    GroupId = groupId,
+                    UserId = userId
+                };
+
+                _context.Posts.Add(newPost);
+                _context.SaveChanges();
+
+                return newPost;
+            }
+
+            return null;
         }
 
-        public void GetAllPosts(Group group)
+        public void Follow(string user1, string user2)
+        {
+            // provera da li user2 vec ne prati user1 
+            var checkFollowing = _context.Followings.Where(f => f.FollowedId == user1 && f.FollowerId == user2).FirstOrDefault();
+
+            if(checkFollowing == null)
+            {
+                var newFollowing = new Following
+                {
+                    FollowedId = user1,
+                    FollowerId = user2
+                };
+
+                _context.Followings.Add(newFollowing);
+                _context.SaveChanges();
+            }
+           
+        }
+
+        public void GetAllPosts(int groupId)
         {
             throw new NotImplementedException();
         }
