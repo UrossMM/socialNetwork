@@ -173,7 +173,7 @@ namespace socialNetwork.Repositories
                 _context.Followings,
                 post => post.UserId,
                 f => f.FollowedId,
-                (post, f) => new PostDTO{Content= post.Content, FollowerId= f.FollowerId }).ToList();
+                (post, f) => new {Content= post.Content, FollowerId= f.FollowerId }).ToList();
 
             var filteredRows = joinRows.Where(p => p.FollowerId == user).Select(p=> p.Content).ToList();
 
