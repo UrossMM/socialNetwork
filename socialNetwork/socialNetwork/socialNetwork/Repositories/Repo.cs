@@ -145,9 +145,50 @@ namespace socialNetwork.Repositories
            
         }
 
-        public void GetAllPosts(int groupId)
+        public List<string> GetPosts(int groupId, string user)
         {
-            throw new NotImplementedException();
+            //sve objave iz jedne grupe
+            var allRowsWithGroupId = _context.Posts.Where(p => p.GroupId == groupId).ToList();
+
+            
+            //iz odgovarajuce grupe izvucemo sve javne objave 
+            var resultPosts = allRowsWithGroupId.Where(p => p.Type == "public").Select(p=> p.Content).ToList();
+
+            //privatne objave da se filtriraju - treba da se proveri da li onaj ko hoce da vidi objave prati korisnike koji su napisali te privatne objave
+            /*var filteredRows = allRowsWithGroupId.Where(p => p.Type == "privatna").Select(p => p.UserId).ToList();
+
+            foreach(var k in filteredRows)
+            {
+                var checkFollowing =_context.Followings.Where(f => f.FollowedId == k && f.FollowerId == user).FirstOrDefault();
+                if(checkFollowing != null)
+                {
+                    var correct = _context.Posts.Where(p => p.UserId == k).First();
+                    resultPosts.Add(correct);
+                    
+                }
+            }*/
+
+            var joinRows = allRowsWithGroupId.Where(p => p.Type == "private").Join(
+
+                _context.Followings,
+                post => post.UserId,
+                f => f.FollowedId,
+                (post, f) => new PostDTO{Content= post.Content, FollowerId= f.FollowerId }).ToList();
+
+            var filteredRows = joinRows.Where(p => p.FollowerId == user).Select(p=> p.Content).ToList();
+
+            //takodje treba omoguciti da onaj ko zove fju vidi i svoje objave ( ukljuciti i svoje privatne objave!!!) jer ih prethodna naredba ne vraca jer
+            // niko ne moze sam sebe da prati
+            var myRows = allRowsWithGroupId.Where(p => p.Type == "private" && p.UserId == user).Select(p=>p.Content).ToList();
+
+            resultPosts.AddRange(myRows);
+            resultPosts.AddRange(filteredRows);
+            /*foreach(var priv in filteredRows)
+            {
+                resultPosts.Add(priv);
+            }*/
+
+            return resultPosts;
         }
     }
 }

@@ -160,5 +160,14 @@ namespace socialNetwork.Controllers
            repository.AddComment(newComm, postId, parentComm);
            return Ok();
        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getPosts")]
+        public List<string> GetPosts(int groupId, string user)
+        {
+            var result = repository.GetPosts(groupId, user);
+            return result;
+        }
     }
 }
