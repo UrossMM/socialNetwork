@@ -173,7 +173,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("getMyFollowers/{myId}")]
-        public List<User> MyFollowers(string myId)
+        public List<UserDTO> MyFollowers(string myId)
         {
             var result = repository.MyFollowers(myId);
             return result;
@@ -182,7 +182,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("whoIFollow/{myId}")]
-        public List<User> WhoIFollow(string myId)
+        public List<UserDTO> WhoIFollow(string myId)
         {
             var result = repository.WhoIFollow(myId);
             return result;
@@ -191,7 +191,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("allMyGroups/{myId}")]
-        public List<Group> AllMyGroups(string myId)
+        public List<GroupDTO> AllMyGroups(string myId)
         {
             var result = repository.AllMyGroups(myId);
             return result;
@@ -200,7 +200,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("allMembersInGroup/{groupId}")]
-        public List<User> GroupMembers(int groupId)
+        public List<UserDTO> GroupMembers(int groupId)
         {
             var result = repository.GroupMembers(groupId);
             return result;
@@ -209,7 +209,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("postComments/{postId}")]
-        public List<Comment> PostComments(int postId)
+        public List<CommentDTO> PostComments(int postId)
         {
             var result = repository.PostComments(postId);
             return result;
@@ -218,7 +218,7 @@ namespace socialNetwork.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("commentComments/{commId}")]
-        public List<Comment> CommentComments(int commId)
+        public List<CommentDTO> CommentComments(int commId)
         {
             var result = repository.CommentComments(commId);
             return result;

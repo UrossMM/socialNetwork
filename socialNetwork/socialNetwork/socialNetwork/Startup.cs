@@ -69,7 +69,7 @@ namespace socialNetwork
             services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddControllers(); /*.AddNewtonsoftJson(options =>
+            services.AddControllers()  ; /*.AddNewtonsoftJson(options =>
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );*/
             services.AddSwaggerGen(c =>

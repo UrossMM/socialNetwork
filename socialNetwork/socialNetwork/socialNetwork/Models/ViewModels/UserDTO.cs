@@ -11,7 +11,14 @@ namespace socialNetwork.Models.ViewModels
         public string Name { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
-        //public string ConfirmPassword { get; set; }
 
+
+        /*
+        public List<Group> Grupe { get; set; }
+        public List<GroupUser> GroupUsers { get; set; }
+
+        public List<Following> Followed { get; set; }
+        public List<Following> Following { get; set; }
+        public List<Post> Posts { get; set; }*/
     }
 }
