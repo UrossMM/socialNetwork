@@ -1,5 +1,6 @@
 ﻿using socialNetwork.Models;
 using socialNetwork.Models.ViewModels;
+using socialNetwork.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace socialNetwork.Repositories
     {
 
         private readonly AppDbContext _context;
+        private const int PageSize = 3;
 
         public Repo(AppDbContext context)
         {
@@ -145,50 +147,147 @@ namespace socialNetwork.Repositories
            
         }
 
-        public List<string> GetPosts(int groupId, string user)
+        public List<string> GetPosts(int groupId, string user, int? pageNumber)
         {
             //sve objave iz jedne grupe
             var allRowsWithGroupId = _context.Posts.Where(p => p.GroupId == groupId).ToList();
 
+            //ako je admin grupe pozvao funkciju on vidi sve objave cak iako ne prati korisnika koji je napisao privatnu objavu!!!!!!!
+            var isAdmin = _context.Groups.FirstOrDefault(g => g.AdminId == user && g.Id==groupId);
+            if(isAdmin != null)
+            {
+                return PaginatedList<string>.Create(allRowsWithGroupId.Select(g => g.Content).ToList().AsQueryable(), pageNumber ?? 1, PageSize);
+               // return allRowsWithGroupId.Select(g=> g.Content).ToList();
+            }
+            else
+            {
+                //iz odgovarajuce grupe izvucemo sve javne objave 
+                var resultPosts = allRowsWithGroupId.Where(p => p.Type == "public").Select(p => p.Content).ToList();
+
+                //privatne objave da se filtriraju - treba da se proveri da li onaj ko hoce da vidi objave prati korisnike koji su napisali te privatne objave
+                
+                var joinRows = allRowsWithGroupId.Where(p => p.Type == "private").Join(
+
+                    _context.Followings,
+                    post => post.UserId,
+                    f => f.FollowedId,
+                    (post, f) => new { Content = post.Content, FollowerId = f.FollowerId }).ToList();
+
+                var filteredRows = joinRows.Where(p => p.FollowerId == user).Select(p => p.Content).ToList();
+
+                //takodje treba omoguciti da onaj ko zove fju vidi i svoje objave ( ukljuciti i svoje privatne objave!!!) jer ih prethodna naredba ne vraca jer
+                // niko ne moze sam sebe da prati
+                var myRows = allRowsWithGroupId.Where(p => p.Type == "private" && p.UserId == user).Select(p => p.Content).ToList();
+
+                resultPosts.AddRange(myRows);
+                resultPosts.AddRange(filteredRows);
+
+                resultPosts = PaginatedList<string>.Create(resultPosts.AsQueryable(), pageNumber ?? 1, PageSize);
+
+                return resultPosts;
+            }
             
-            //iz odgovarajuce grupe izvucemo sve javne objave 
-            var resultPosts = allRowsWithGroupId.Where(p => p.Type == "public").Select(p=> p.Content).ToList();
+            
+        }
 
-            //privatne objave da se filtriraju - treba da se proveri da li onaj ko hoce da vidi objave prati korisnike koji su napisali te privatne objave
-            /*var filteredRows = allRowsWithGroupId.Where(p => p.Type == "privatna").Select(p => p.UserId).ToList();
-
-            foreach(var k in filteredRows)
-            {
-                var checkFollowing =_context.Followings.Where(f => f.FollowedId == k && f.FollowerId == user).FirstOrDefault();
-                if(checkFollowing != null)
-                {
-                    var correct = _context.Posts.Where(p => p.UserId == k).First();
-                    resultPosts.Add(correct);
-                    
-                }
-            }*/
-
-            var joinRows = allRowsWithGroupId.Where(p => p.Type == "private").Join(
-
+        public List<User> MyFollowers(string myId)
+        {
+            var joinRows =_context.Users.ToList().Join(
                 _context.Followings,
-                post => post.UserId,
+                u => u.Id,
                 f => f.FollowedId,
-                (post, f) => new {Content= post.Content, FollowerId= f.FollowerId }).ToList();
+                (u, f) => new  {  FollowedId = f.FollowedId ,FollowerId = f.FollowerId }
+                ).ToList();
 
-            var filteredRows = joinRows.Where(p => p.FollowerId == user).Select(p=> p.Content).ToList();
+            var filteredRows = joinRows.Where(f => f.FollowedId == myId).ToList();
 
-            //takodje treba omoguciti da onaj ko zove fju vidi i svoje objave ( ukljuciti i svoje privatne objave!!!) jer ih prethodna naredba ne vraca jer
-            // niko ne moze sam sebe da prati
-            var myRows = allRowsWithGroupId.Where(p => p.Type == "private" && p.UserId == user).Select(p=>p.Content).ToList();
+            var result = filteredRows.Join(
+                _context.Users,
+                f => f.FollowerId,
+                u => u.Id,
+                (f, u) => new User{ Email = u.Email, Name = u.Name }
+                ).ToList();
 
-            resultPosts.AddRange(myRows);
-            resultPosts.AddRange(filteredRows);
-            /*foreach(var priv in filteredRows)
-            {
-                resultPosts.Add(priv);
-            }*/
+            return result;
+        }
 
-            return resultPosts;
+        public List<User> WhoIFollow(string myId)
+        {
+            var joinRows = _context.Users.ToList().Join(
+                _context.Followings,
+                u => u.Id,
+                f => f.FollowerId,
+                (u, f) => new { FollowedId = f.FollowedId, FollowerId = f.FollowerId }
+                ).ToList();
+
+            var filteredRows = joinRows.Where(f => f.FollowerId == myId).ToList();
+            
+            var result = filteredRows.Join(
+                _context.Users,
+                f => f.FollowedId,
+                u => u.Id,
+                (f, u) => new User { Email = u.Email, Name = u.Name }
+                ).ToList();
+
+            return result;
+
+        }
+
+        public List<Group> AllMyGroups(string myId)
+        {
+            var joinRows = _context.Users.ToList().Join(
+                _context.GroupUsers,
+                u => u.Id,
+                gu => gu.UserId,
+                (u, gu) => new { UserId = u.Id, Groupid = gu.GroupId }
+                ).ToList(); 
+
+            var filteredRows = joinRows.Where(gu => gu.UserId == myId).ToList();
+
+            var result = filteredRows.Join(
+                _context.Groups,
+                gu => gu.Groupid,
+                g => g.Id,
+                (gu, g) => new Group { Name = g.Name }
+                ).ToList();
+
+            return result;
+        }
+
+        public List<User> GroupMembers(int groupId)
+        {
+            var joinRows = _context.Groups.ToList().Join(
+                _context.GroupUsers,
+                g => g.Id,
+                gu => gu.GroupId,
+                (g, gu) => new { GroupId = g.Id, UserId = gu.UserId }
+                ).ToList();
+
+            var filteredRows = joinRows.Where(gu => gu.GroupId == groupId).ToList();
+
+            var result = filteredRows.Join(
+                _context.Users,
+                gu => gu.UserId,
+                u => u.Id,
+                (gu, u) => new User { Email = u.Email, Name = u.Name }
+                ).ToList();
+
+            return result;
+
+        }
+
+        public List<Comment> PostComments(int postId)
+        {
+            var result = _context.Comments.Where(c => c.PostId == postId && c.ParentId == null).ToList();
+            
+            return result;
+        }
+
+        public List<Comment> CommentComments(int commId)
+        {
+            var result = _context.Comments.Where(c => c.ParentId == commId).ToList();
+
+            return result;
         }
     }
 }

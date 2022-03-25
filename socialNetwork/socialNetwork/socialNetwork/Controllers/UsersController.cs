@@ -163,10 +163,64 @@ namespace socialNetwork.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("getPosts")]
-        public List<string> GetPosts(int groupId, string user)
+        [Route("getPosts/{groupId}/{user}")]
+        public List<string> GetPosts(int groupId, string user, [FromQuery]int pageNumber)
         {
-            var result = repository.GetPosts(groupId, user);
+            var result = repository.GetPosts(groupId, user, pageNumber);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getMyFollowers/{myId}")]
+        public List<User> MyFollowers(string myId)
+        {
+            var result = repository.MyFollowers(myId);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("whoIFollow/{myId}")]
+        public List<User> WhoIFollow(string myId)
+        {
+            var result = repository.WhoIFollow(myId);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("allMyGroups/{myId}")]
+        public List<Group> AllMyGroups(string myId)
+        {
+            var result = repository.AllMyGroups(myId);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("allMembersInGroup/{groupId}")]
+        public List<User> GroupMembers(int groupId)
+        {
+            var result = repository.GroupMembers(groupId);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("postComments/{postId}")]
+        public List<Comment> PostComments(int postId)
+        {
+            var result = repository.PostComments(postId);
+            return result;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("commentComments/{commId}")]
+        public List<Comment> CommentComments(int commId)
+        {
+            var result = repository.CommentComments(commId);
             return result;
         }
     }
