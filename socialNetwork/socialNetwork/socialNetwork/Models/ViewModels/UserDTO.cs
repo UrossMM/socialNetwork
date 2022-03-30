@@ -11,7 +11,7 @@ namespace socialNetwork.Models.ViewModels
         public string Name { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
-
+        public string ApiKey { get; set; }
 
         /*
         public List<Group> Grupe { get; set; }

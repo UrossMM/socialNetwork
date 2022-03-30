@@ -15,6 +15,7 @@ namespace socialNetwork.Models
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
+        public string ApiKey { get; set; }
 
         //referenca na grupe u kojima je admin
         //[JsonIgnore]
