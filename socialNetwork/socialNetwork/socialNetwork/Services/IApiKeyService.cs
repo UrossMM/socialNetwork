@@ -8,7 +8,7 @@ namespace socialNetwork.Services
 {
     public interface IApiKeyService
     {
-        string GetKey(string email);
+        bool GetKey(string email);
         void InsertKey(ApiKeyUser a);
         List<string> GetAllKeys();
     }

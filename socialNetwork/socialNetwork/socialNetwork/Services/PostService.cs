@@ -1,5 +1,6 @@
 ﻿using socialNetwork.Models;
 using socialNetwork.Models.ViewModels;
+using socialNetwork.Paging;
 using socialNetwork.Repositories;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,9 @@ namespace socialNetwork.Services
             return _postRepo.CreatePost(post, groupId, userId);
         }
 
-        public List<string> GetPosts(int groupId, string user, int? pageNumber)
+        public List<PostDTO> GetPosts(int groupId, string user, PagingProperties prop)
         {
-            return _postRepo.GetPosts(groupId, user, pageNumber);
+            return _postRepo.GetPosts(groupId, user, prop);
         }
 
         public List<CommentDTO> PostComments(int postId)

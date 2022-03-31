@@ -12,14 +12,13 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Attributes
 {
-    [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Method)]
-    public class ApiKeyAttribute : Attribute, IAsyncActionFilter
+    //[AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Method)]
+    public class ApiKeyFilter : IAsyncActionFilter
     {
         private const string APIKEYNAME = "ApiKey";
-        //referenca na bazu
         private readonly IApiKeyService _apiKeyService;
 
-        public ApiKeyAttribute(IApiKeyService apiKeyService) 
+        public ApiKeyFilter(IApiKeyService apiKeyService)
         {
             _apiKeyService = apiKeyService;
         }
@@ -44,21 +43,12 @@ namespace socialNetwork.Attributes
                 return;
             }
 
-            var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            //var apiKeyService = context.HttpContext.RequestServices.GetRequiredService<IApiKeyService>();
+            //var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
             //ovde da se uporedi sa apikljucem korisnika 
-            List<string> apiKeys = _apiKeyService.GetAllKeys();
-            bool isFound = false;
-
-            foreach (var apiKey in apiKeys)
-            {
-                if (apiKey.Equals(extractedApiKey) && isFound==false)
-                {
-                    isFound = true;
-                }
-            }
-
-            if(isFound == false)
+            var apiKey = _apiKeyService.GetKey(extractedApiKey);
+            if(!apiKey)
             {
                 context.Result = new ContentResult()
                 {
@@ -67,6 +57,25 @@ namespace socialNetwork.Attributes
                 };
                 return;
             }
+            /*bool isFound = false;
+
+            foreach (var apiKey in apiKeys)
+            {
+                if (apiKey.Equals(extractedApiKey) && isFound==false)
+                {
+                    isFound = true;
+                }
+            }*/
+
+            /*if(isFound == false)
+            {
+                context.Result = new ContentResult()
+                {
+                    StatusCode = 401,
+                    Content = "Unauthorized client"
+                };
+                return;
+            }*/
 
            /* var apiKey = appSettings.GetValue<string>(APIKEYNAME);
 

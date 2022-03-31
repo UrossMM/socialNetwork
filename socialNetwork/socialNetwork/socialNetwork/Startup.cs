@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using socialNetwork.Attributes;
 using socialNetwork.Models;
 using socialNetwork.Repositories;
 using socialNetwork.Repository;
@@ -92,6 +93,8 @@ namespace socialNetwork
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IApiKeyService, ApiKeyService>();
+            services.AddScoped<ApiKeyFilter>();
+
 
 
         }

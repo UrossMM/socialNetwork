@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Controllers
 {
-    [ApiKey]
+    //[ApiKey]
     [Route("api/[controller]")]
     [ApiController]
     public class GroupController : ControllerBase

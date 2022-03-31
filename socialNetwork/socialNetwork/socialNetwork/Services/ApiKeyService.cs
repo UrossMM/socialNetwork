@@ -1,4 +1,5 @@
-﻿using socialNetwork.Models;
+﻿
+using socialNetwork.Models;
 using socialNetwork.Repositories;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace socialNetwork.Services
             return _apiKeyRepo.GetAllKeys();
         }
 
-        public string GetKey(string email)
+        public bool GetKey(string email)
         {
             return _apiKeyRepo.GetKey(email);
         }

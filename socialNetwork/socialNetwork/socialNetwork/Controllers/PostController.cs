@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using socialNetwork.Attributes;
 using socialNetwork.Models;
 using socialNetwork.Models.ViewModels;
+using socialNetwork.Paging;
 using socialNetwork.Services;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace socialNetwork.Controllers
 {
-    [ApiKey]
+    //[ApiKey]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -39,13 +40,14 @@ namespace socialNetwork.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        //komentarisana jer je prebacena u SecretController
+        /*[HttpPost] 
         [Route("getPosts/{groupId}/{user}")]
-        public List<string> GetPosts(int groupId, string user, [FromQuery] int pageNumber)
+        public List<PostDTO> GetPosts(int groupId, string user, PagingProperties prop)
         {
-            var result = _postService.GetPosts(groupId, user, pageNumber);
+            var result = _postService.GetPosts(groupId, user, prop);
             return result;
-        }
+        }*/ 
 
 
         [HttpGet]
