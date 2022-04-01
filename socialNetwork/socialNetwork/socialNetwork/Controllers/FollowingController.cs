@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using socialNetwork.Attributes;
 using socialNetwork.Models.ViewModels;
+using socialNetwork.Repositories;
 using socialNetwork.Services;
 using System;
 using System.Collections.Generic;

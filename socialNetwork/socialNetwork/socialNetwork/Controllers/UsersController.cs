@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -80,16 +80,40 @@ namespace socialNetwork.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody]UserDTO model)
+        public async Task<ActionResult<StatusError>> Register([FromBody]UserDTO model)
         {
-            var user = new User { UserName = model.Email, Email = model.Email, RememberMe = model.RememberMe, Name = model.Name, ApiKey = model.ApiKey };
+
+           /* if(!ModelState.IsValid) //Uopste ne mora da se pise jer ako UserDTO ima prekrsene validacije nece ni da se udje u telo funkcije
+                return new StatusError(StatusCodes.Status406NotAcceptable, "Email je ogranicen na 25 karaktera");*/
+
+            var user = new User { UserName = model.Email, Email = model.Email, RememberMe = model.RememberMe, Name = model.Name };
+
+            /*if (user.Email.Length > 25)
+                return new StatusError (StatusCodes.Status406NotAcceptable,  "Email je ogranicen na 25 karaktera" );*/
+
             var result = await userManager.CreateAsync(user, model.Password);
             var email = await userManager.GetEmailAsync(user);
             //insert u tabelu apikeyuser email i key korisnika
-            ApiKeyUser a = new ApiKeyUser() { Email = model.Email, ApiKey = model.ApiKey };
+
+            //automatski generisi guid 
+
+            Guid g = Guid.NewGuid();
+
+            ApiKeyUser a = new ApiKeyUser() { Email = model.Email, ApiKey = g.ToString() };
             apiKeyService.InsertKey(a);
             //await signInManager.SignInAsync(user, isPersistent: false);
-            return Ok();
+            return new StatusError (StatusCodes.Status200OK,  "Remember your key! Your key is: " + g.ToString());
+            //return Ok("Remember your key! Your key is: " + g.ToString());
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getApiKey")]
+        public IActionResult GetApiKey()
+        {
+            var Email = HttpContext.User.Identity.Name;
+            var res = apiKeyService.GetMyKey(Email);
+            return Ok(res);
         }
 
         /*[HttpPost]

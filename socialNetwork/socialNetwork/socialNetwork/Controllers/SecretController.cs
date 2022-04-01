@@ -18,6 +18,11 @@ namespace socialNetwork.Controllers
     {
         private readonly IPostService _postService;
 
+        public SecretController(IPostService postService)
+        {
+            _postService = postService;
+        }
+
         [HttpPost]
         [Route("getPosts/{groupId}/{user}")]
         public List<PostDTO> GetPosts(int groupId, string user, PagingProperties prop)

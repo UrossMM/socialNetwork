@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using socialNetwork.Attributes;
+using socialNetwork.GenericRepo;
 using socialNetwork.Models;
 using socialNetwork.Repositories;
 using socialNetwork.Repository;
@@ -84,19 +85,17 @@ namespace socialNetwork
 
             services.AddTransient<IJWTManagerService, JWTManagerService>();
             //services.AddTransient<IRepo, Repo>();
-            services.AddTransient<IFollowingRepo, FollowingRepo>();
+            services.AddTransient<IFollowingService, FollowingService>();
+
             services.AddTransient<IGroupRepo, GroupRepo>();
             services.AddTransient<IPostRepo, PostRepo>();
             services.AddTransient<IApiKeyRepo, ApiKeyRepo>();
 
-            services.AddTransient<IFollowingService, FollowingService>();
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IApiKeyService, ApiKeyService>();
             services.AddScoped<ApiKeyFilter>();
-
-
-
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -68,8 +68,6 @@ namespace socialNetwork.Repositories
             return null;
         }
 
-        //klasa sa atributima pageNum, pageSize, sortOrder(0 ili 1), sortCriterium(po cemu se sortira)
-
         public List<PostDTO> GetPosts(int groupId, string user, PagingProperties prop)
         {
             //sve objave iz jedne grupe

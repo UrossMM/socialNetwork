@@ -11,5 +11,6 @@ namespace socialNetwork.Services
         bool GetKey(string email);
         void InsertKey(ApiKeyUser a);
         List<string> GetAllKeys();
+        string GetMyKey(string email);
     }
 }

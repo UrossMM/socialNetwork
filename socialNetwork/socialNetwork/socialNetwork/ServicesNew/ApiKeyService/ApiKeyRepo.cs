@@ -25,6 +25,11 @@ namespace socialNetwork.Repositories
             return _context.ApiKeyUsers.Any(k=> k.ApiKey ==key);
         }
 
+        public string GetMyKey(string email)
+        {
+            return _context.ApiKeyUsers.Where(a => a.Email == email).Select(a => a.ApiKey).FirstOrDefault();
+        }
+
         public void InsertKey(ApiKeyUser a)
         {
             _context.ApiKeyUsers.Add(a);

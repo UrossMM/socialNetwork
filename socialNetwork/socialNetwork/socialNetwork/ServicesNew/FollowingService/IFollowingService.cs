@@ -1,5 +1,4 @@
 ﻿using socialNetwork.Models.ViewModels;
-using socialNetwork.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ namespace socialNetwork.Services
     {
         List<UserDTO> MyFollowers(string myId);
         List<UserDTO> WhoIFollow(string myId);
-        void Follow(string user1, string user2);
+        StatusError Follow(string user1, string user2); //onaj ko pozove fju je onaj ko hoce da zaprati user1
+
     }
 }

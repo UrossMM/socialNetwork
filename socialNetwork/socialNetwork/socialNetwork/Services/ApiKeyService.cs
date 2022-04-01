@@ -27,6 +27,11 @@ namespace socialNetwork.Services
             return _apiKeyRepo.GetKey(email);
         }
 
+        public string GetMyKey(string email)
+        {
+            return _apiKeyRepo.GetMyKey(email);
+        }
+
         public void InsertKey(ApiKeyUser a)
         {
             _apiKeyRepo.InsertKey(a);
