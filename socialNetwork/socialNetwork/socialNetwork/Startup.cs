@@ -87,7 +87,7 @@ namespace socialNetwork
 
 
             services.AddAutoMapper(typeof(Startup));
-
+            
             services.AddTransient<IJWTManagerService, JWTManagerService>();
             //services.AddTransient<IRepo, Repo>();
             services.AddTransient<IFollowingService, FollowingService>();
