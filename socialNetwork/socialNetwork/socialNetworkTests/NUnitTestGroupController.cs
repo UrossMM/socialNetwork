@@ -6,6 +6,7 @@ using NUnit.Framework;
 using socialNetwork;
 using socialNetwork.Controllers;
 using socialNetwork.Models;
+using socialNetwork.Models.ViewModels;
 using socialNetwork.Repositories;
 using socialNetwork.Services;
 using System;
@@ -37,10 +38,10 @@ namespace socialNetworkTests
         }
 
         [Test]
-        public void TestMyGroups()
+        public void TestMyGroupsAction()
         {
-            var result = _groupController.MyGroups("dfff0cc9-ef94-454c-835e-20cb9ab2f315");
-            Assert.That(result, Is.TypeOf<OkObjectResult>()); //ovaj test vraca listu objekata i zato je OkObjectResult
+            var actionResult = _groupController.MyGroups("dfff0cc9-ef94-454c-835e-20cb9ab2f315");
+            Assert.That(actionResult, Is.TypeOf<OkObjectResult>()); //ovaj test vraca listu objekata i zato je OkObjectResult
         }
 
         [Test]
@@ -49,6 +50,17 @@ namespace socialNetworkTests
             //a sada funkcija controllera AddUserToGroup vraca samo Ok, bez objekata pa pisemo sledece:
             var result = _groupController.AddUserToGroup("dfff0cc9-ef94-454c-835e-20cb9ab2f315", 3);
             Assert.That(result, Is.TypeOf<OkResult>());
+        }
+
+        [Test]
+        public void TestMyGroupsData()
+        {
+            var actionResult = _groupController.MyGroups("dfff0cc9-ef94-454c-835e-20cb9ab2f315");
+
+            var data = (actionResult as OkObjectResult).Value as List<GroupDTO>;
+
+            Assert.That(data.Count, Is.EqualTo(2));
+            Assert.That(data.First().Name, Is.EqualTo("Sport"));
         }
     }
 }
