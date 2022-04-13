@@ -86,20 +86,21 @@ namespace socialNetwork.Repositories
 
         }
 
-        public List<Group> MyGroups(string myId)
+        public List<GroupDTO> MyGroups(string myId)
         {
             var admin = _context.Users.Find(myId);
-            var groups = _context.Groups.Where(g => g.AdminId == myId).ToList();
+            var groups = _context.Groups.Where(g => g.AdminId == myId).Select(g=> new GroupDTO { Name = g.Name, AdminId = g.AdminId }).ToList();
             return groups;
         }
-        public List<Group> GetAllGroups()
+        public List<GroupDTO> GetAllGroups()
         {
-            var result = _context.Groups.ToList();
+            var result = _context.Groups.Select(g=> new GroupDTO {Name=g.Name, AdminId=g.AdminId }).ToList();
             return result;
         }
-        public Group GetGroupById(int id)
+        public GroupDTO GetGroupById(int id)
         {
-            var result = _context.Groups.FirstOrDefault(g => g.Id == id);
+            var result = _context.Groups.Where(g => g.Id == id).Select(g => new GroupDTO { Name = g.Name, AdminId = g.AdminId }).FirstOrDefault();
+                //.FirstOrDefault(g => g.Id == id); ovo je bilo umesto where i select dok je Group bio povratni tip
             return result;
         }
 
@@ -190,7 +191,7 @@ namespace socialNetwork.Repositories
             
         }
 
-        public List<User> MyFollowers(string myId)
+        public List<UserDTO> MyFollowers(string myId)
         {
             var joinRows =_context.Users.ToList().Join(
                 _context.Followings,
@@ -205,13 +206,13 @@ namespace socialNetwork.Repositories
                 _context.Users,
                 f => f.FollowerId,
                 u => u.Id,
-                (f, u) => new User{ Email = u.Email, Name = u.Name }
+                (f, u) => new UserDTO { Email = u.Email, Name = u.Name }
                 ).ToList();
 
             return result;
         }
 
-        public List<User> WhoIFollow(string myId)
+        public List<UserDTO> WhoIFollow(string myId)
         {
             var joinRows = _context.Users.ToList().Join(
                 _context.Followings,
@@ -226,14 +227,14 @@ namespace socialNetwork.Repositories
                 _context.Users,
                 f => f.FollowedId,
                 u => u.Id,
-                (f, u) => new User { Email = u.Email, Name = u.Name }
+                (f, u) => new UserDTO { Email = u.Email, Name = u.Name }
                 ).ToList();
 
             return result;
 
         }
 
-        public List<Group> AllMyGroups(string myId)
+        public List<GroupDTO> AllMyGroups(string myId)
         {
             var joinRows = _context.Users.ToList().Join(
                 _context.GroupUsers,
@@ -248,13 +249,13 @@ namespace socialNetwork.Repositories
                 _context.Groups,
                 gu => gu.Groupid,
                 g => g.Id,
-                (gu, g) => new Group { Name = g.Name }
+                (gu, g) => new GroupDTO { Name = g.Name, AdminId= g.AdminId } //vraca sve grupe (vraca adminid a kad probam ceo objekat tad baca onu gresku za cycle)
                 ).ToList();
 
             return result;
         }
 
-        public List<User> GroupMembers(int groupId)
+        public List<UserDTO> GroupMembers(int groupId)
         {
             var joinRows = _context.Groups.ToList().Join(
                 _context.GroupUsers,
@@ -269,23 +270,29 @@ namespace socialNetwork.Repositories
                 _context.Users,
                 gu => gu.UserId,
                 u => u.Id,
-                (gu, u) => new User { Email = u.Email, Name = u.Name }
+                (gu, u) => new UserDTO { Email = u.Email, Name = u.Name/*, Grupe=u.Grupe*/} //za Grupe baca gresku za cycle
                 ).ToList();
-
+              
             return result;
 
         }
 
-        public List<Comment> PostComments(int postId)
+        public List<CommentDTO> PostComments(int postId)
         {
-            var result = _context.Comments.Where(c => c.PostId == postId && c.ParentId == null).ToList();
+            var result = _context.Comments.Where(c => c.PostId == postId && c.ParentId == null).Select(c=> new CommentDTO
+            {
+                Text = c.Text,
+            }).ToList();
             
             return result;
         }
 
-        public List<Comment> CommentComments(int commId)
+        public List<CommentDTO> CommentComments(int commId)
         {
-            var result = _context.Comments.Where(c => c.ParentId == commId).ToList();
+            var result = _context.Comments.Where(c => c.ParentId == commId).Select(c => new CommentDTO
+            {
+                Text = c.Text,
+            }).ToList();
 
             return result;
         }

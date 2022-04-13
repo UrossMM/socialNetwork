@@ -11,13 +11,19 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using socialNetwork.Attributes;
+using socialNetwork.GenericRepo;
 using socialNetwork.Models;
 using socialNetwork.Repositories;
 using socialNetwork.Repository;
+using socialNetwork.Services;
+using socialNetwork.ServicesNew;
+using socialNetwork.ServicesNew.HttpServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace socialNetwork
@@ -69,9 +75,11 @@ namespace socialNetwork
             services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddControllers(); /*.AddNewtonsoftJson(options =>
+            /*services.AddControllers()  ;*/ /*.AddNewtonsoftJson(options =>
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );*/
+            services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "socialNetwork", Version = "v1" });
@@ -81,7 +89,22 @@ namespace socialNetwork
             services.AddAutoMapper(typeof(Startup));
 
             services.AddTransient<IJWTManagerService, JWTManagerService>();
-            services.AddTransient<IRepo, Repo>();
+            //services.AddTransient<IRepo, Repo>();
+            services.AddTransient<IFollowingService, FollowingService>();
+
+            services.AddTransient<IGroupRepo, GroupRepo>();
+            services.AddTransient<IPostRepo, PostRepo>();
+            services.AddTransient<IApiKeyRepo, ApiKeyRepo>();
+
+            services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IApiKeyService, ApiKeyService>();
+            services.AddScoped<ApiKeyFilter>();
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddHttpClient<IHttpClientService, HttpClientFactoryService>();
+            services.AddTransient<IHttpClientRestSharpService, HttpClientRestSharpService>();
+            services.AddTransient<IHttpClientCodeMaze, HttpClientCodeMaze>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

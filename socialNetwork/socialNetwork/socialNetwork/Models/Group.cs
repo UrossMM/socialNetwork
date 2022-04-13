@@ -13,11 +13,14 @@ namespace socialNetwork.Models
 
         //referenca na admina grupe (User)
         public string AdminId { get; set; }
-        [JsonIgnore]
         public User Admin { get; set; }
 
         //referenca na tabelu GroupUser??? -za sad da
+        [JsonIgnore]
+
         public List<GroupUser> GroupUsers { get; set; }
+        [JsonIgnore]
+
         public List<Post> Posts { get; set; }
 
         /*referenca na tabelu Post

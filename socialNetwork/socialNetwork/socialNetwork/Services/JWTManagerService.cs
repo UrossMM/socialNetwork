@@ -25,7 +25,7 @@ namespace socialNetwork.Repository
             {"user3", "password3" },
         };*/
 
-        public JWTManagerService(IConfiguration configuration, AppDbContext context)
+        public JWTManagerService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
