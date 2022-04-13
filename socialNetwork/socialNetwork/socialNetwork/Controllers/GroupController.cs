@@ -82,5 +82,23 @@ namespace socialNetwork.Controllers
             var result = _groupService.AllMyGroups(myId);
             return result;
         }
+
+        [HttpGet]
+        [Route("getAllGroupsWithInclude")]
+        public List<Group> GroupsWithInclude()
+        {
+            var result = _groupService.GroupsWithInclude();
+            return result;
+
+        }
+
+        [HttpGet]
+        [Route("getAllAdmins")]
+        public List<UserDTO> AllAdmins()
+        {
+            var result = _groupService.AllAdmins();
+            return result;
+
+        }
     }
 }

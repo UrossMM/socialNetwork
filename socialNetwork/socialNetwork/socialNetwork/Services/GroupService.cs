@@ -47,9 +47,18 @@ namespace socialNetwork.Services
             return _groupRepo.GroupMembers(groupId);
         }
 
+        public List<Group> GroupsWithInclude()
+        {
+            return _groupRepo.GroupsWithInclude();
+        }
+
         public List<GroupDTO> MyGroups(string myId)
         {
             return _groupRepo.MyGroups(myId);
+        }
+        public List<UserDTO> AllAdmins()
+        {
+            return _groupRepo.AllAdmins();
         }
     }
 }

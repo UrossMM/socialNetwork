@@ -16,5 +16,8 @@ namespace socialNetwork.Services
         void AddUserToGroup(string id, int groupId); 
         List<GroupDTO> MyGroups(string myId); 
         List<GroupDTO> AllMyGroups(string myId); 
+        List<Group> GroupsWithInclude();
+        List<UserDTO> AllAdmins();
+
     }
 }

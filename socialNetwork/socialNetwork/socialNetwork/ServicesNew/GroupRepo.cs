@@ -1,4 +1,6 @@
-﻿using socialNetwork.Models;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using socialNetwork.Models;
 using socialNetwork.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,15 @@ namespace socialNetwork.Repositories
     public class GroupRepo : IGroupRepo
     {
         private readonly AppDbContext _context;
-        public GroupRepo(AppDbContext context)
+        private readonly IMapper _mapper;
+
+        public GroupRepo(AppDbContext context, IMapper mapper) 
         {
             _context = context;
+            _mapper = mapper;
         }
+
+     
 
         public void AddUserToGroup(string id, int groupId)
         {
@@ -77,6 +84,7 @@ namespace socialNetwork.Repositories
                     GroupId = newGroup.Id
                 };
 
+
                 _context.GroupUsers.Add(groupUser);
                 _context.SaveChanges();
 
@@ -117,7 +125,17 @@ namespace socialNetwork.Repositories
                 (gu, u) => new UserDTO { Email = u.Email, Name = u.Name/*, Grupe=u.Grupe*/} //za Grupe baca gresku za cycle
                 ).ToList();
 
+            bool empty = string.IsNullOrEmpty("asdf");
+
+            empty = "asdf".IsNullOrEmpty();
+
             return result;
+        }
+
+        public List<Group> GroupsWithInclude()
+        {
+            var includegroup = _context.Groups.Include(x => x.Admin).ToList();
+            return includegroup;
         }
 
         public List<GroupDTO> MyGroups(string myId)
@@ -125,6 +143,27 @@ namespace socialNetwork.Repositories
             var admin = _context.Users.Find(myId);
             var groups = _context.Groups.Where(g => g.AdminId == myId).Select(g => new GroupDTO { Name = g.Name, AdminId = g.AdminId }).ToList();
             return groups;
+        }
+
+        public List<UserDTO> AllAdmins()
+        {
+            var admins = _context.Groups.Include(x => x.Admin).Select(x => x.Admin).Distinct().ToList();
+            List<UserDTO> res = _mapper.Map<List<UserDTO>>(admins);
+            return res;
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static int WordCount(this string str)
+        {
+            return str.Split(new char[] { ' ', '.', '?' },
+                             StringSplitOptions.RemoveEmptyEntries).Length;
+        }
+
+        public static bool IsNullOrEmpty(this string str)
+        {
+            return string.IsNullOrEmpty(str);
         }
     }
 }

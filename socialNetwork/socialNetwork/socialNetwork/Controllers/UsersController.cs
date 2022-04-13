@@ -106,7 +106,6 @@ namespace socialNetwork.Controllers
             //return Ok("Remember your key! Your key is: " + g.ToString());
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("getApiKey")]
         public IActionResult GetApiKey()
