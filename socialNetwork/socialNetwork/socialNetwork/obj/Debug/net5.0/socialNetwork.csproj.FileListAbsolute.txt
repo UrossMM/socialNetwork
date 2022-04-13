@@ -71,3 +71,4 @@ C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\bin\Debug\net5.0\RestSharp.dll
+C:\#uros\projekti\tviter\socialNetwork\socialNetwork\socialNetwork\obj\Debug\net5.0\socialNetwork.csproj.AssemblyReference.cache
