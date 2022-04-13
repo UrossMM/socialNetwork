@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using socialNetwork;
@@ -14,33 +13,19 @@ namespace socialNetworkTests
     {
         IServiceProvider _serviceProvider;
         IServiceCollection _services;
-        IConfiguration _configuration;
-        //private  AppDbContext _context;
-        //private  IGroupRepo _groupRepo;
         private  IGroupService _groupService;
-        //private  IMapper _mapper;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            _services = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+            _services = new ServiceCollection();
             _services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=aspnet-WebApp1-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"));
-            //_services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString")));
             _services.AddTransient<IGroupRepo, GroupRepo>();
             _services.AddTransient<IGroupService, GroupService>();
             _services.AddAutoMapper(typeof(Startup));
             _serviceProvider = _services.BuildServiceProvider(); 
 
             _groupService = (IGroupService)_serviceProvider.GetService(typeof(IGroupService));
-            // _collection = new microsoft.extensions.dependencyinjection.servicecollection();
-            // //_context = (appdbcontext)_serviceprovider.getservice(typeof(appdbcontext));
-            // _collection.adddbcontext<appdbcontext>(options => options.usesqlserver(_configuration.getconnectionstring("defaultconnectionstring")));
-            // _collection.addtransient<igrouprepo, grouprepo>();
-            // _collection.addtransient<igroupservice, groupservice>();
-            //// _grouprepo = new grouprepo(_context, _mapper);
-            // _groupService = (IGroupService)_serviceProvider.GetService(typeof(IGroupService));
-
-
         }
 
         [Test, Order(1)]
